@@ -6,7 +6,6 @@ jobs:
       - checkout
       - run: echo "this is the test job"
 
-# ジョブの実行順の指定
 workflows:
   build_and_test:
     jobs:
