@@ -1,16 +1,43 @@
 version: 2.1
 
+client-cache-keys:
+  - &client-pnpm-cache-key v1-client-pnpm-deps-{{ checksum "client/pnpm-lock.yaml" }}
+
 jobs:
-  test:
+  client-typecheck:
     docker: 
-      - image: cimg/base:current
+      - image: cimg/node:21.7.3
     resource_class: small
+    working_directory: ~/project
     steps:
       - checkout
-      - run: echo "this is the test job"
+      - restore_cache:
+          name: Restore pnpm Package Cache
+          keys:
+            - *client-pnpm-cache-key
+      - run:
+          name: Setup store directory
+          command: |
+            cd client
+            pnpm config set store-dir .pnpm-store
+      - run:
+          name: Install Dependencies
+          command: |
+            cd client
+            pnpm install --frozen-lockfile
+      - save_cache:
+          name: Save pnpm Package Cache
+          key: *client-pnpm-cache-key
+          paths:
+            - client/.pnpm-store
+      - run:
+          name: Run type checkings
+          command: |
+            cd client
+            npx tsc --noEmit
 
 workflows:
   test:
     jobs:
-      - test
+      - client-typecheck
 
