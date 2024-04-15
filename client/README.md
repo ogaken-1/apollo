@@ -1,11 +1,11 @@
 ## Requirements
 
-- pnpm 8.15
 - node 21.7
 
-## Usage
+## Setup
 
 ```bash
+$ corepack enable
 $ pnpm install
 ```
 
