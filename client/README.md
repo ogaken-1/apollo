@@ -5,8 +5,8 @@
 ## Setup
 
 ```bash
-$ corepack enable
-$ pnpm install
+corepack enable
+pnpm install
 ```
 
 ## Available Scripts
