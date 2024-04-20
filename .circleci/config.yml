@@ -4,8 +4,8 @@ client-cache-keys:
   - &client-pnpm-cache-key v1-client-pnpm-deps-{{ checksum "client/pnpm-lock.yaml" }}
 
 jobs:
-  client-typecheck:
-    docker: 
+  client-lint:
+    docker:
       - image: cimg/node:21.7.3
     resource_class: small
     working_directory: ~/project
@@ -35,9 +35,10 @@ jobs:
           command: |
             cd client
             npx tsc --noEmit
+            pnpm biome check ./src
 
 workflows:
   test:
     jobs:
-      - client-typecheck
+      - client-lint
 
